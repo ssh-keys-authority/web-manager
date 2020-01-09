@@ -1,7 +1,3 @@
-/**
- * First, we will load all of this project's Javascript utilities and other
- * dependencies. Then, we will be ready to develop a robust and powerful
- * application frontend using useful Laravel and JavaScript libraries.
- */
-
-require('./bootstrap');
+import 'startbootstrap-sb-admin-2/vendor/jquery/jquery.min';
+import 'startbootstrap-sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min';
+import 'startbootstrap-sb-admin-2/js/sb-admin-2.min';
