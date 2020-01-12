@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Set up variables
+BASE_DOMAIN="{{baseDomain}}"
+SERVER_KEY="{{serverKey}}"
+
+BIN_PATH="/usr/local/bin/"
+
+# Determin install path
+if [ ! -d "$BIN_PATH" ]; then
+    echo "We were unable to detect the install path at {$BIN_PATH}. Please enter the path to where you would like SSH Keys Authority installed."
+    read BIN_PATH
+    echo "You've chosen to install SSH Keys Authority into ${BIN_PATH}. Proceeding with installation..."
+fi
+
+# Detect architecture
+ARCH=$(arch)
+
+# Convert system arch to a user friendly arch
+if [ $ARCH == "x86_64" ]; then
+    ARCH="amd64"
+
+elif [ $ARCH == "i686" ] || [ $ARCH == "i386" ]; then
+    ARCH="386"
+
+else
+    echo "Error! Your system architecture is not currently supported by this install script!"
+    echo "Your detected architecture was ${ARCH}. Please contact SSH Keys Authority for installation assistance."
+    exit 126
+fi
+
+echo "Downloading latest version of the SSH Keys Authority agent for architecture: ${ARCH}"
+
+curl -s https://api.github.com/repos/ssh-keys-authority/server-client/releases/latest |
+    grep "linux_${ARCH}.tar.gz" |
+    cut -d : -f 2,3 |
+    tr -d \" |
+    wget -qi - -O server-client-latest.tar.gz
+
+# # Extract the binary and move to the bin dir
+tar xvzf server-client-latest.tar.gz
+rm server-client-latest.tar.gz
+
+mv ./server-client /usr/local/bin/ssh-authority-manager
+
+# # # Set up the config dir
+mkdir /etc/ssh-authority-manager
+
+# # # Write the config file
+echo "basedomain: {{baseDomain}}" >>/etc/ssh-authority-manager/config.yaml
+echo "serverkey: {{serverKey}}" >>/etc/ssh-authority-manager/config.yaml
+
+# # # Run the setup for each account
+{{users}}
+
+# # # Write the cron file
+echo "#" >>/etc/cron.d/ssh-authority-manager
+echo "# SSH Authority Manager Client Cron" >>/etc/cron.d/ssh-authority-manager
+echo "#" >>/etc/cron.d/ssh-authority-manager
+echo "* * * * * root /usr/local/bin/ssh-authority-manager sync >/dev/null 2>&1" >>/etc/cron.d/ssh-authority-manager
+
+# # # Run the first sync
+/usr/local/bin/ssh-authority-manager sync
+
+# # # Setup complete
+echo -e "\e[32mSetup Complete!\e[0m"
+echo -e "\e[32mYour server is now set up to use SSH Keys Authority. You can start adding your team members via the SSH Keys Authority control panel at {{baseDomain}}\e[0m"
