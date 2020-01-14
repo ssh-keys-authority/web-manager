@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Account;
 use App\Server;
+use Carbon\Carbon;
 
 class ApiController extends Controller
 {
     public function setup(Server $server)
     {
         $users = [];
-        foreach ($server->users as $user) {
-            $users[] = '/usr/local/bin/server-client add --username='.$user->name.' --apikey='.$user->uuid;
+        foreach ($server->accounts as $account) {
+            $users[] = '/usr/local/bin/ssh-authority-manager add --username='.$account->name.' --apikey='.$account->uuid;
         }
 
         return str_replace(
@@ -20,11 +22,31 @@ class ApiController extends Controller
                 '{{users}}',
             ],
             [
-                config('app.url'),
+                trim(config('app.url'), '/'),
                 $server->uuid,
                 implode(PHP_EOL, $users)
             ],
             file_get_contents(base_path('resources/stubs/Install.stub'))
         );
+    }
+
+    public function keys(Server $server, Account $account)
+    {
+        $response = [
+            '# START SSH Keys Authority Managed Keys File'
+        ];
+
+        foreach ($account->users as $role) {
+            foreach ($role->keys as $key) {
+                $response[] = $key->key;
+            }
+        }
+
+        $response[] = '# END SSH Keys Authority Managed Keys File';
+
+        $account->update(['last_sync' => Carbon::now()]);
+        $server->update(['last_sync' => Carbon::now()]);
+
+        return implode(PHP_EOL, $response);
     }
 }

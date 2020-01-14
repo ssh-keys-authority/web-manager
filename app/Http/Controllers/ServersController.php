@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Account;
 use App\Http\Requests\ServerStoreRequest;
 use App\OperatingSystem;
 use App\Server;
-use App\ServerUser;
-use Illuminate\Http\Request;
+use App\User;
 
-class ServerController extends Controller
+class ServersController extends Controller
 {
     public function __construct()
     {
@@ -42,27 +42,19 @@ class ServerController extends Controller
 
         $users = [];
         foreach ($values['users'] as $user) {
-            $users[] = new ServerUser(['name' => $user]);
+            $users[] = new Account(['name' => $user]);
         }
 
-        $server->users()->saveMany($users);
+        $server->accounts()->saveMany($users);
 
         return redirect(route('server.show', $server));
     }
 
     public function show(Server $server)
     {
-        return view('server.show', compact('server'));
-    }
+        $users = User::all();
 
-    public function edit(Server $server)
-    {
-        return view('server.edit');
-    }
-
-    public function update(Request $request, Server $server)
-    {
-        //
+        return view('server.show', compact('server', 'users'));
     }
 
     public function destroy(Server $server)

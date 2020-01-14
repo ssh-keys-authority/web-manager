@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class ServerUser extends Model
+class Account extends Model
 {
     protected $fillable = [
         'name',
-        'server_id'
+        'server_id',
+        'last_sync',
     ];
 
     protected $casts = [
@@ -30,5 +31,11 @@ class ServerUser extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_accounts')
+            ->withTimestamps();
     }
 }

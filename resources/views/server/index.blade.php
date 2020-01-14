@@ -39,7 +39,7 @@
                                 @foreach($servers as $server)
                                     <tr>
                                         <td class="sorting_1">{{ $server->name }}</td>
-                                        <td>{{ $server->users->count() }}</td>
+                                        <td>{{ $server->accounts->count() }}</td>
                                         <td>
                                             @if($server->last_sync !== null)
                                                 <span class="badge badge-pill badge-success py-2 px-3">

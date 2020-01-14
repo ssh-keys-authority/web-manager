@@ -13,15 +13,33 @@ if [ ! -d "$BIN_PATH" ]; then
     echo "You've chosen to install SSH Keys Authority into ${BIN_PATH}. Proceeding with installation..."
 fi
 
+CRON_FILE="/etc/cron.d/ssh-authority-manager"
+if test -f "$CRON_FILE"; then
+    sudo rm /etc/cron.d/ssh-authority-manager
+    echo -e "\e[31mDetected old CRON file... Deleting..."
+fi
+
+CONFIG_DIR="/etc/ssh-authority-manager"
+if test -d "$CONFIG_DIR"; then
+    sudo rm -r /etc/ssh-authority-manager
+    echo -e "\e[31mDetected old CONFIG directory... Deleting..."
+fi
+
+SYNC_FILE="/usr/local/bin/ssh-authority-manager"
+if test -f "$SYNC_FILE"; then
+    sudo rm /usr/local/bin/ssh-authority-manager
+    echo -e "\e[31mDetected old SYNC file... Deleting..."
+fi
+
 # Detect architecture
 ARCH=$(arch)
 
 # Convert system arch to a user friendly arch
 if [ $ARCH == "x86_64" ]; then
-    ARCH="amd64"
+    ARCH="64-bit"
 
 elif [ $ARCH == "i686" ] || [ $ARCH == "i386" ]; then
-    ARCH="386"
+    ARCH="32-bit"
 
 else
     echo "Error! Your system architecture is not currently supported by this install script!"
@@ -29,10 +47,10 @@ else
     exit 126
 fi
 
-echo "Downloading latest version of the SSH Keys Authority agent for architecture: ${ARCH}"
+echo -e "\e[33mDownloading latest version of the SSH Keys Authority agent for architecture: ${ARCH}"
 
 curl -s https://api.github.com/repos/ssh-keys-authority/server-client/releases/latest |
-    grep "linux_${ARCH}.tar.gz" |
+    grep "Linux-${ARCH}.tar.gz" |
     cut -d : -f 2,3 |
     tr -d \" |
     wget -qi - -O server-client-latest.tar.gz

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServerUsersTable extends Migration
+class CreateKeysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,13 @@ class CreateServerUsersTable extends Migration
     public function up()
     {
         Schema::create(
-            'server_users',
+            'keys',
             function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->timestamps();
-                $table->uuid('uuid');
                 $table->string('name');
-                $table->unsignedBigInteger('server_id');
-                $table->dateTime('last_sync')->nullable();
+                $table->text('key');
+                $table->unsignedBigInteger('user_id');
             }
         );
     }
@@ -33,6 +32,6 @@ class CreateServerUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('server_users');
+        Schema::dropIfExists('keys');
     }
 }

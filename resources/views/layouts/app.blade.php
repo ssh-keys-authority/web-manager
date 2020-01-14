@@ -15,23 +15,21 @@
 @auth
     <div id="wrapper">
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="menu">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"
+               href="{{ route('server.index') }}">
+                <div class="sidebar-brand-text mx-3">{{ config('app.name') }}</div>
             </a>
 
             <hr class="sidebar-divider my-0">
 
             <li class="nav-item active">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="{{ route('server.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Серверы</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="{{ route('user.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Команда</span></a>
             </li>

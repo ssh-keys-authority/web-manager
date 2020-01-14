@@ -9,7 +9,8 @@ class Server extends Model
 {
     protected $fillable = [
         'name',
-        'operatingsystem_id'
+        'operatingsystem_id',
+        'last_sync',
     ];
 
     protected $casts = [
@@ -37,8 +38,8 @@ class Server extends Model
         return $this->belongsTo(OperatingSystem::class, 'operatingsystem_id', 'id');
     }
 
-    public function users()
+    public function accounts()
     {
-        return $this->hasMany(ServerUser::class);
+        return $this->hasMany(Account::class);
     }
 }
