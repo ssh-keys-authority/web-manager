@@ -19,7 +19,7 @@ class CreateKeysTable extends Migration
                 $table->bigIncrements('id');
                 $table->timestamps();
                 $table->string('name');
-                $table->text('key');
+                $table->text('key')->unique();
                 $table->unsignedBigInteger('user_id');
             }
         );

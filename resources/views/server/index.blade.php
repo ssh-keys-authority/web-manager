@@ -17,56 +17,49 @@
         </div>
     @endif
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Список серверов</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <div class="row">
-                    <div class="col-sm-12">
-                        @if(count($servers) > 0)
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Сервер</th>
-                                    <th>Пользователей</th>
-                                    <th>Последнее обновление</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($servers as $server)
-                                    <tr>
-                                        <td class="sorting_1">{{ $server->name }}</td>
-                                        <td>{{ $server->accounts->count() }}</td>
-                                        <td>
-                                            @if($server->last_sync !== null)
-                                                <span class="badge badge-pill badge-success py-2 px-3">
-                                                    <i class="fas fa-check-circle text-white-50 mr-1"></i>
-                                                    {{ $server->last_sync->diffForHumans() }}
-                                                </span>
-                                            @else
-                                                <span class="badge badge-pill badge-danger py-2 px-3">
-                                                    <i class="fas fa-times-circle text-white-50 mr-1"></i>
-                                                    Сервер не настроен
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="text-right">
-                                            <a href="{{ route('server.show', $server) }}"
-                                               class="btn btn-sm btn-primary shadow-sm">Управление</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        @else
-                            <p>Вы еще не добавили ни одного сервера.</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @component('components.card')
+        @slot('title')
+            Список серверов
+        @endslot
+
+        @if(count($servers) > 0)
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Сервер</th>
+                    <th>Пользователей</th>
+                    <th>Последнее обновление</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($servers as $server)
+                    <tr>
+                        <td class="sorting_1">{{ $server->name }}</td>
+                        <td>{{ $server->accounts->count() }}</td>
+                        <td>
+                            @if($server->isActivated())
+                                <span class="badge badge-pill badge-success py-2 px-3">
+                                    <i class="fas fa-check-circle text-white-50 mr-1"></i>
+                                    {{ $server->last_sync->diffForHumans() }}
+                                </span>
+                            @else
+                                <span class="badge badge-pill badge-danger py-2 px-3">
+                                    <i class="fas fa-times-circle text-white-50 mr-1"></i>
+                                    Сервер не настроен
+                                </span>
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            <a href="{{ route('server.show', $server) }}"
+                               class="btn btn-sm btn-primary shadow-sm">Управление</a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @else
+            <p>Вы еще не добавили ни одного сервера.</p>
+        @endif
+    @endcomponent
 @endsection

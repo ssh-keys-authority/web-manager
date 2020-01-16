@@ -57,7 +57,7 @@
                                                class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
                                                id="password_confirmation"
                                                name="password_confirmation"
-                                               placeholder="Пароль еще раз  "
+                                               placeholder="Пароль еще раз"
                                                required autocomplete="new-password">
                                     </div>
                                 </div>

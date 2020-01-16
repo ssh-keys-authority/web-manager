@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\KeyStoreRequest;
 use App\Key;
+use App\User;
 
 class KeysController extends Controller
 {
@@ -12,13 +13,26 @@ class KeysController extends Controller
         $this->middleware('verified');
     }
 
-    public function store(KeyStoreRequest $request)
+    public function store(KeyStoreRequest $request, User $user)
     {
         $values = $request->validated();
+
+        $user->keys()
+            ->create(
+                [
+                    'name' => $values['name'],
+                    'key' => $values['key']
+                ]
+            );
+
+        return redirect(route('user.show', $user));
     }
 
-    public function destroy(Key $key)
+    public function destroy(User $user, Key $key)
     {
-        //
+        $key->delete();
+
+        return redirect(route('user.show', $user))
+            ->with('key.destroyed', $key->name);
     }
 }

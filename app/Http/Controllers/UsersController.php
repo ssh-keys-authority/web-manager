@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserStoreRequest;
 use App\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -14,7 +15,9 @@ class UsersController extends Controller
 
     public function index()
     {
-        return view('user.index');
+        $users = User::all();
+
+        return view('user.index', compact('users'));
     }
 
     public function create()
@@ -22,24 +25,27 @@ class UsersController extends Controller
         return view('user.create');
     }
 
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //
+        $values = $request->validated();
+
+        $user = User::create(
+            [
+                'name' => $values['name'],
+                'last_name' => $values['last_name'],
+                'email' => $values['email'],
+                'password' => Hash::make($values['password']),
+            ]
+        );
+
+        $user->markEmailAsVerified();
+
+        return redirect(route('user.show', $user));
     }
 
     public function show(User $user)
     {
-        return view('user.show');
-    }
-
-    public function edit(User $user)
-    {
-        return view('user.edit');
-    }
-
-    public function update(Request $request, User $user)
-    {
-        //
+        return view('user.show', compact('user'));
     }
 
     public function destroy(User $user)

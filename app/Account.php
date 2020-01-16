@@ -38,4 +38,9 @@ class Account extends Model
         return $this->belongsToMany(User::class, 'user_accounts')
             ->withTimestamps();
     }
+
+    public function isActivated()
+    {
+        return $this->last_sync !== null;
+    }
 }

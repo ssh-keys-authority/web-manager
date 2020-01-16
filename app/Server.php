@@ -42,4 +42,9 @@ class Server extends Model
     {
         return $this->hasMany(Account::class);
     }
+
+    public function isActivated()
+    {
+        return $this->last_sync !== null;
+    }
 }
