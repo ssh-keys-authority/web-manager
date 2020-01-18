@@ -19,8 +19,12 @@ class CreateKeysTable extends Migration
                 $table->bigIncrements('id');
                 $table->timestamps();
                 $table->string('name');
-                $table->text('key')->unique();
+                $table->text('key');
                 $table->unsignedBigInteger('user_id');
+
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('users')->onDelete('cascade');
             }
         );
     }

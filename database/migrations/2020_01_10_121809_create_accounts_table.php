@@ -22,6 +22,10 @@ class CreateAccountsTable extends Migration
                 $table->string('name');
                 $table->unsignedBigInteger('server_id');
                 $table->dateTime('last_sync')->nullable();
+
+                $table->foreign('server_id')
+                    ->references('id')
+                    ->on('servers')->onDelete('cascade');
             }
         );
     }

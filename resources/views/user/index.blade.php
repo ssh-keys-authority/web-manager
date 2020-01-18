@@ -7,6 +7,14 @@
             <i class="fas fa-plus fa-sm text-white-50"></i> Новый пользователь</a>
     </div>
 
+    @if (session('user.destroyed'))
+        <div class="alert alert-success">
+            <h4 class="alert-heading">Пользователь удален</h4>
+
+            <p>Доступы к серверам будут обновлены во время следующей синхронизации</p>
+        </div>
+    @endif
+
     @component('components.card')
         @slot('title')
             Список пользователей

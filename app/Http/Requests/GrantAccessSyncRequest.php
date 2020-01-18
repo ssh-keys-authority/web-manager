@@ -24,8 +24,8 @@ class GrantAccessSyncRequest extends FormRequest
     public function rules()
     {
         return [
-            'access' => 'array',
-            'access.*' => 'exists:accounts,id'
+            'access' => 'nullable|array',
+            'access.*' => 'exists:users,id'
         ];
     }
 }

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'SSH Authority Manager'),
+    'name' => env('APP_NAME', '>SSHKA'),
 
     /*
     |--------------------------------------------------------------------------
