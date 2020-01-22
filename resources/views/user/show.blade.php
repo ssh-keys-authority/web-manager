@@ -4,37 +4,38 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ $user->full_name }}</h1>
         <a href="{{ route('user.index') }}" class="btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-list fa-sm text-white-50"></i> Вернуться к списку</a>
+            <i class="fas fa-list fa-sm text-white-50"></i> {{ __('Back to list') }}</a>
     </div>
 
     @if ($key = session('key.destroyed'))
         <div class="alert alert-success">
-            <h4 class="alert-heading">Ключ удален</h4>
+            <h4 class="alert-heading">{{ __('Key deleted') }}</h4>
 
-            <p>Ключ {{ $key }} будет удален с сервера при следующей синхронизации</p>
+            <p>{{ __('The key :key will be deleted from the server at the next synchronization',
+                ['key' => $key]) }}</p>
         </div>
     @endif
 
     @component('components.card')
         @slot('title')
-            Управление пользователем
+            {{ __('User management') }}
         @endslot
         @slot('actions')
             <a href="#" data-toggle="modal" data-target="#destroyUser" class="btn btn-sm btn-danger shadow-sm">
-                <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> Удалить</a>
+                <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> {{ __('Delete') }}</a>
         @endslot
 
         <table class="table">
             <tr>
-                <td>Пользователь</td>
+                <td>{{ __('User') }}</td>
                 <td>{{ $user->full_name }}</td>
             </tr>
             <tr>
-                <td>Эл. почта</td>
+                <td>{{ __('Email') }}</td>
                 <td>{{ $user->email }}</td>
             </tr>
             <tr>
-                <td>Дата регистрации</td>
+                <td>{{ __('Registration date') }}</td>
                 <td>{{ $user->created_at->isoFormat('DD MMMM YYYY') }}</td>
             </tr>
 
@@ -43,13 +44,13 @@
 
     @component('components.card')
         @slot('title')
-            Управление ключами
+            {{ __('Keys management') }}
         @endslot
         <table class="table">
             <thead>
             <tr>
-                <th>Название</th>
-                <th>Хеш</th>
+                <th>{{ __('Key name') }}</th>
+                <th>{{ __('Hash') }}</th>
                 <th></th>
             </tr>
             </thead>
@@ -60,7 +61,7 @@
                     <td class="text-right">
                         <a href="#" data-toggle="modal" data-target="#destroyKey-{{ $key->id }}"
                            class="btn btn-sm btn-danger shadow-sm">
-                            <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> Удалить</a>
+                            <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> {{ __('Delete') }}</a>
                     </td>
                 </tr>
             @endforeach
@@ -69,7 +70,7 @@
         <p>
             <a class="btn btn-primary" data-toggle="collapse" href="#storeKey" role="button"
                aria-expanded="false" aria-controls="storeAccount">
-                Новый ключ
+                {{ __('New Key') }}
             </a>
         </p>
         <div class="collapse @if($errors->any()) show @endif" id="storeKey">
@@ -77,19 +78,19 @@
                 <form method="POST" action="{{ route('key.store', $user) }}">
                     @csrf
                     <div class="form-group row">
-                        <label for="name" class="col-sm-2 col-form-label">Название ключа</label>
+                        <label for="name" class="col-sm-2 col-form-label">{{ __('Key name') }}</label>
                         <div class="col-sm-10">
                             <input type="text" name="name"
                                    class="form-control @error('last_name') is-invalid @enderror"
                                    id="name" value="{{ old('name') }}" required>
                             <small class="form-text text-muted">
-                                Название ключ, по которому вы сможете его идентифицировать
+                                {{ __('The name of the key by which you can identify it') }}
                             </small>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="key" class="col-sm-2 col-form-label">Название ключа</label>
+                        <label for="key" class="col-sm-2 col-form-label">{{ __('Key') }}</label>
                         <div class="col-sm-10">
                             <textarea name="key"
                                       class="form-control @error('key') is-invalid @enderror"
@@ -97,7 +98,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Добавить аккаунт</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Add Account') }}</button>
                 </form>
             </div>
         </div>
@@ -110,15 +111,17 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Вы уверены?</h5>
+                        <h5 class="modal-title">{{ __('Are you sure?') }}</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Закрыть">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">После удаления, сервер невозможно будет восстановить.</div>
+                    <div class="modal-body">{{ __('After uninstallation, the :what cannot be restored',
+                        ['what' => __('User')]) }}</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Я передумал</button>
-                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <button class="btn btn-secondary" type="button"
+                                data-dismiss="modal">{{ __('I changed my mind') }}</button>
+                        <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
                     </div>
                 </div>
             </form>
@@ -133,15 +136,17 @@
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Вы уверены?</h5>
+                            <h5 class="modal-title">{{ __('Are you sure?') }}</h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Закрыть">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">После удаления, ключ невозможно будет воостановить.</div>
+                        <div class="modal-body">{{ __('After uninstallation, the :what cannot be restored',
+                        ['what' => __('key')]) }}</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Я передумал</button>
-                            <button type="submit" class="btn btn-danger">Удалить</button>
+                            <button class="btn btn-secondary" type="button"
+                                    data-dismiss="modal">{{ __('I changed my mind') }}</button>
+                            <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
                         </div>
                     </div>
                 </form>
