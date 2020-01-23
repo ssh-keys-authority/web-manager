@@ -142,7 +142,7 @@
                             </button>
                         </div>
                         <div class="modal-body">{{ __('After uninstallation, the :what cannot be restored',
-                        ['what' => __('key')]) }}</div>
+                        ['what' => __('Key')]) }}</div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button"
                                     data-dismiss="modal">{{ __('I changed my mind') }}</button>

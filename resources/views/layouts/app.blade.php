@@ -9,7 +9,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <title>Hello, world!</title>
+    <title>{{ config('app.name') }}</title>
 </head>
 <body{!! !Auth::check() && !isset($exception) ? ' class="bg-gradient-primary"' : '' !!}>
 @auth
@@ -25,13 +25,13 @@
             <li class="nav-item{{ request()->is('server*') ? ' active':'' }}">
                 <a class="nav-link" href="{{ route('server.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Серверы</span></a>
+                    <span>{{ __('Servers') }}</span></a>
             </li>
 
             <li class="nav-item{{ request()->is('team*') ? ' active':'' }}">
                 <a class="nav-link" href="{{ route('user.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Команда</span></a>
+                    <span>{{ __('Team') }}</span></a>
             </li>
         </ul>
 
@@ -49,7 +49,7 @@
                                  aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Выйти
+                                    {{ __('Logout') }}
                                 </a>
                             </div>
                         </li>
@@ -81,10 +81,12 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Нажмите «Выйти» ниже, если вы готовы завершитьА текущий сеанс.</div>
+                    <div
+                        class="modal-body">{{ __('Click Log Out below if you are ready to end the current session') }}</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Я передумал</button>
-                        <button type="submit" class="btn btn-primary">Выйти</button>
+                        <button class="btn btn-secondary" type="button"
+                                data-dismiss="modal">{{ __('I changed my mind') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ __('Logout') }}</button>
                     </div>
                 </div>
             </form>

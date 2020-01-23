@@ -2,16 +2,16 @@
 
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Сервер {{ $server->name }}</h1>
+        <h1 class="h3 mb-0 text-gray-800">{{ __('Server') }} {{ $server->name }}</h1>
         <a href="{{ route('server.index') }}" class="btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-list fa-sm text-white-50"></i> Вернуться к списку</a>
+            <i class="fas fa-list fa-sm text-white-50"></i> {{ __('Back to list') }}</a>
     </div>
 
     @if ($user = session('account.destroyed'))
         <div class="alert alert-success">
-            <h4 class="alert-heading">Аккаунт удален</h4>
+            <h4 class="alert-heading">{{ __('Account deleted') }}</h4>
 
-            <p>Для завершения вам необходимо выполнить на сервере следующую команду:</p>
+            <p>{{ __('To complete, you need to run the following command on the server:') }}</p>
 
             <pre>sudo ssh-authority-manager remove --username={{ $user }}</pre>
         </div>
@@ -19,8 +19,7 @@
 
     @foreach($server->accounts()->whereNull('last_sync')->get() as $account)
         <div class="alert alert-success">
-            <p>Похоже, вы не закончили настройку некоторых учетных записей сервера. Пожалуйста, выполните следующую
-                команду, чтобы завершить установку.</p>
+            <p>{{ __('It looks like you have not finished setting up some server accounts. Please run the following command to complete the installation') }}</p>
 
             <pre>sudo ssh-authority-manager add --username={{ $account->name }} --apikey={{ $account->uuid }} && sudo ssh-authority-manager sync</pre>
         </div>
@@ -28,60 +27,56 @@
 
     @component('components.card')
         @slot('title')
-            Управление сервером
+            {{ __('Server management') }}
         @endslot
         @slot('actions')
             <a href="#" data-toggle="modal" data-target="#destroyServer" class="btn btn-sm btn-danger shadow-sm">
-                <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> Удалить</a>
+                <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> {{ __('Delete') }}</a>
         @endslot
 
         @if($server->isActivated())
             <table class="table">
                 <tr>
-                    <td>Сервер</td>
+                    <td>{{ __('Server') }}</td>
                     <td>{{ $server->name }}</td>
                 </tr>
                 <tr>
-                    <td>Статус</td>
+                    <td>{{ __('Status') }}</td>
                     <td>
-                        Обновлен {{ $server->last_sync->diffForHumans() }}
+                        {{ __('Last Update') }} {{ $server->last_sync->diffForHumans() }}
                     </td>
                 </tr>
                 <tr>
-                    <td>Операционная система</td>
+                    <td>{{ __('Operating System') }}</td>
                     <td>{{ $server->system->name }}</td>
                 </tr>
             </table>
         @else
-            <p>Чтобы завершить настройку, вам необходимо установить на сервер клиент, который будет
-                периодически обновлять ваши SSH-ключи.</p>
-            <p>Клиент не дает доступ к серверу и не мешает его работе.</p>
+            <p>{{ __('To complete the configuration, you need to install a client on the server that will periodically update your SSH keys') }}</p>
+            <p>{{ __('The client does not give access to the server and does not interfere with its operation') }}</p>
 
-            <h2>Установка на {{ $server->system->name }}</h2>
+            <h2>{{ __('Installation on', ['system' => $server->system->name]) }}</h2>
 
-            <p>Чтобы установить клиент и настроить сервер для работы с системными учетными записями, которые
-                вы уже указали, войдите в систему как пользователь root и выполните следующую команду:</p>
+            <p>{{ __('To install the client and configure the server to work with the system accounts that you have already specified, log in as the root user and run the following command:') }}</p>
 
             <pre>sudo bash -c "$(curl -L {{ trim(config('app.url'), '/') }}/api/v1/setup/{{ $server->uuid }}/install.sh)"</pre>
 
-            <h3>Что дальше?</h3>
-            <p>После выполнения команды, она сообщит вам, что установка завершилась. После этого вы можете
-                обновить эту страницу для управления сервером.</p>
-            <p>Если ваша установка не была завершена (или завершилась, но вы все еще видите этот экран),
-                пожалуйста, проверьте наличие ошибок в программе установки.</p>
+            <h3>{{ __('What\'s next?') }}</h3>
+            <p>{{ __('After executing the command, it will inform you that the installation has completed. After that, you can refresh this page to manage the server') }}</p>
+            <p>{{ __('If your installation was not completed (or completed, but you still see this screen), please check for errors in the installer') }}</p>
         @endif
     @endcomponent
 
     @if($server->isActivated())
         @component('components.card')
             @slot('title')
-                Управление аккаунтами
+                {{ __('Accounts management') }}
             @endslot
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Аккаунт</th>
-                    <th>Статус</th>
+                    <th>{{ __('Account') }}</th>
+                    <th>{{ __('Status') }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -97,14 +92,14 @@
                             @else
                                 <span class="badge badge-pill badge-danger py-2 px-3">
                                     <i class="fas fa-times-circle text-white-50 mr-1"></i>
-                                    Аккаунт не настроен
+                                    {{ __('Account not configured') }}
                                 </span>
                             @endif
                         </td>
                         <td class="text-right">
                             <a href="#" data-toggle="modal" data-target="#destroyAccount-{{ $account->id }}"
                                class="btn btn-sm btn-danger shadow-sm">
-                                <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> Удалить</a>
+                                <i class="fas fa-trash fa-sm mr-1 text-white-50"></i> {{ __('Delete') }}</a>
                         </td>
                     </tr>
                 @endforeach
@@ -113,7 +108,7 @@
             <p>
                 <a class="btn btn-primary" data-toggle="collapse" href="#storeAccount" role="button"
                    aria-expanded="false" aria-controls="storeAccount">
-                    Новый аккаунт
+                    {{ __('New Account') }}
                 </a>
             </p>
             <div class="collapse @if($errors->any()) show @endif" id="storeAccount">
@@ -121,18 +116,18 @@
                     <form method="POST" action="{{ route('account.store', $server) }}">
                         @csrf
                         <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">Имя аккаунта</label>
+                            <label for="name" class="col-sm-2 col-form-label">{{ __('Account name') }}</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name"
                                        class="form-control @error('last_name') is-invalid @enderror"
                                        id="name" value="{{ old('name') }}" required>
                                 <small class="form-text text-muted">
-                                    Аккаунт на сервере для которого необходимо настроить управление доступом
+                                    {{ __('The account on the server for which you want to configure access control') }}
                                 </small>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Добавить аккаунт</button>
+                        <button type="submit" class="btn btn-primary">{{ __('Add Account') }}</button>
                     </form>
                 </div>
             </div>
@@ -140,7 +135,7 @@
 
         @component('components.card')
             @slot('title')
-                Управление командой
+                {{ __('Team management') }}
             @endslot
             <form action="{{ route('grant-access.sync', $server) }}" method="post">
                 @csrf
@@ -149,7 +144,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Пользователь</th>
+                                <th>{{ __('User') }}</th>
                                 @foreach($server->accounts as $account)
                                     <th>{{ $account->name }}</th>
                                 @endforeach
@@ -173,7 +168,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Обновить права доступа</button>
+                <button type="submit" class="btn btn-primary">{{ __('Update Permissions') }}</button>
             </form>
         @endcomponent
     @endif
@@ -190,10 +185,12 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">После удаления, сервер невозможно будет восстановить.</div>
+                    <div class="modal-body">{{ __('After uninstallation, the :what cannot be restored',
+                        ['what' => __('Server')]) }}</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Я передумал</button>
-                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <button class="btn btn-secondary" type="button"
+                                data-dismiss="modal">{{ __('I changed my mind') }}</button>
+                        <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
                     </div>
                 </div>
             </form>

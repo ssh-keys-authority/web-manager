@@ -11,7 +11,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Добро пожаловать!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">{{ __('Welcome!') }}</h1>
                                     </div>
 
                                     <form method="POST" action="{{ route('login') }}" class="user">
@@ -24,7 +24,7 @@
                                                    name="email"
                                                    value="{{ old('email') }}"
                                                    required autocomplete="email" autofocus
-                                                   placeholder="Электронная почта">
+                                                   placeholder="{{ __('Email') }}">
                                         </div>
                                         <div class="form-group">
                                             <input type="password"
@@ -32,7 +32,7 @@
                                                    id="password"
                                                    name="password"
                                                    required autocomplete="current-password"
-                                                   placeholder="Пароль">
+                                                   placeholder="{{ __('Password') }}">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -40,21 +40,27 @@
                                                        name="remember"
                                                        id="remember" {{ old('remember') ? 'checked' : '' }}>
                                                 <label class="custom-control-label" for="remember">
-                                                    Запомнить меня на этом устройстве</label>
+                                                    {{ __('Remember me') }}</label>
                                             </div>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Войти
+                                            {{ __('Login') }}
                                         </button>
                                     </form>
                                     <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="{{ route('password.request') }}">Забыли пароль?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="{{ route('register') }}">Создать новый аккаунт!</a>
-                                    </div>
+                                    @if (Route::has('password.request'))
+                                        <div class="text-center">
+                                            <a class="small"
+                                               href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
+                                        </div>
+                                    @endif
+                                    @if (Route::has('register'))
+                                        <div class="text-center">
+                                            <a class="small"
+                                               href="{{ route('register') }}">{{ __('Create a new account!') }}</a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

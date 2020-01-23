@@ -9,7 +9,7 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Новый аккаунт!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">{{ __('New account!') }}</h1>
                             </div>
                             <form class="user" method="post" action="{{ route('register') }}">
                                 @csrf
@@ -21,7 +21,7 @@
                                                id="name"
                                                name="name"
                                                value="{{ old('name') }}"
-                                               placeholder="Имя"
+                                               placeholder="{{ __('Name') }}"
                                                required autocomplete="name" autofocus>
                                     </div>
                                     <div class="col-sm-6">
@@ -30,7 +30,7 @@
                                                id="last_name"
                                                name="last_name"
                                                value="{{ old('last_name') }}"
-                                               placeholder="Фамилия"
+                                               placeholder="{{ __('Last Name') }}"
                                                required autocomplete="last_name">
                                     </div>
                                 </div>
@@ -40,7 +40,7 @@
                                            id="email"
                                            name="email"
                                            value="{{ old('email') }}"
-                                           placeholder="Электронная почта"
+                                           placeholder="{{ __('Email') }}"
                                            required autocomplete="email">
                                 </div>
                                 <div class="form-group row">
@@ -49,7 +49,7 @@
                                                class="form-control form-control-user @error('password') is-invalid @enderror"
                                                id="password"
                                                name="password"
-                                               placeholder="Пароль"
+                                               placeholder="{{ __('Password') }}"
                                                required autocomplete="new-password">
                                     </div>
                                     <div class="col-sm-6">
@@ -57,21 +57,25 @@
                                                class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
                                                id="password_confirmation"
                                                name="password_confirmation"
-                                               placeholder="Пароль еще раз"
+                                               placeholder="{{ __('Confirm Password') }}"
                                                required autocomplete="new-password">
                                     </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
-                                    Зарегистрироваться
+                                    {{ __('Sign up') }}
                                 </button>
                             </form>
                             <hr>
+                            @if (Route::has('password.request'))
+                                <div class="text-center">
+                                    <a class="small"
+                                       href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
+                                </div>
+                            @endif
                             <div class="text-center">
-                                <a class="small" href="{{ route('password.request') }}">Забыли пароль?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="{{ route('login') }}">Уже зарегистрированы? Войти!</a>
+                                <a class="small"
+                                   href="{{ route('login') }}">{{ __('Already registered? Sign in!') }}</a>
                             </div>
                         </div>
                     </div>
